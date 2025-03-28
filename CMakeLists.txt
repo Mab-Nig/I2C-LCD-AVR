@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Project_17)
+project(Project_17 LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -26,7 +26,8 @@ set(BAUD_RATE 115200)
 set(AVRDUDE "/home/maivuphong/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/bin/avrdude")
 set(AVRDUDE_CONF "/home/maivuphong/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/etc/avrdude.conf")
 
-add_executable(elf main.c)
+add_executable(elf)
+add_subdirectory(src)
 set_target_properties(elf PROPERTIES
   OUTPUT_NAME ${PROJECT_NAME}.elf
 )
