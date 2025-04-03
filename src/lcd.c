@@ -57,7 +57,7 @@ int lcd_op_init(const LcdOp *op) {
   }
   _delay_us(NORMAL_CMD_DELAY_US);
 
-  LcdCmd cmd = {op->addr, 0, 0, 0, op->backlight};
+  LcdCmd cmd = {.addr = op->addr, .rs = 0, .rw = 0, .bl = op->backlight};
   uint8_t codes[] = {
     FUNCTION_SET(0, 1, 0), DISPLAY_CTRL(0, 0, 0), CLEAR, ENTRY_MODE_SET(1, 0)
   };
@@ -71,7 +71,14 @@ int lcd_op_init(const LcdOp *op) {
 }
 
 int lcd_op_send(const LcdOp *op) {
-  LcdCmd cmd = {op->addr, 0, 0, 0, op->backlight};
+  LcdCmd cmd = {.addr = op->addr, .rs = 0, .rw = 0, .bl = op->backlight};
+
+  if (op->clear) {
+    cmd.code = CLEAR;
+    if (lcd_send_cmd(&cmd) < 0) {
+      return -1;
+    }
+  }
 
   if (!op->buf) {
     return lcd_send_pins(cmd.addr, op->backlight << BL_PIN);
@@ -80,6 +87,7 @@ int lcd_op_send(const LcdOp *op) {
   {
     uint8_t ddram_addr = (op->row << 6) | op->col;
     uint8_t codes[] = {DISPLAY_CTRL(0, 0, 0), SET_DDRAM_ADDR(ddram_addr)};
+
     for (uint8_t i = 0; i < sizeof(codes); ++i) {
       cmd.code = codes[i];
       if (lcd_send_cmd(&cmd) < 0) {
@@ -96,7 +104,6 @@ int lcd_op_send(const LcdOp *op) {
     if (lcd_send_cmd(&cmd) < 0) {
       return -1;
     }
-
     ++buf;
   }
 

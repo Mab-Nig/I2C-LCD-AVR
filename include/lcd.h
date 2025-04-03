@@ -5,7 +5,7 @@
 
 typedef struct LcdOp {
   uint8_t addr;
-  uint8_t backlight;
+  uint8_t backlight, clear;
   uint8_t row, col;
   const char *buf;
 } LcdOp;

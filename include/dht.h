@@ -9,10 +9,11 @@ typedef struct PortPin {
 } PortPin;
 
 typedef struct DhtResult {
-  uint8_t temp_int, temp_dec, hum_int, hum_dec;
+  float temp, humid;
 } DhtResult;
 
 void dht_init(const PortPin *port);
 int dht_sense(const PortPin *port, DhtResult *result);
+void lcd_flash(void);
 
 #endif // DHT_H

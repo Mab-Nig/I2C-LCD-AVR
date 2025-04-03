@@ -25,16 +25,22 @@ int main(void) {
   char buf[MAX_BUF_SIZE];
 
   while (1) {
-    dht_sense(&port, &result);
+    op.buf = NULL;
+    op.clear = 1;
+
+    if (dht_sense(&port, &result) < 0) {
+      lcd_flash();
+    }
 
     op.buf = buf;
+    op.clear = 0;
 
-    sprintf(buf, "Temp:  %d.%d", result.temp_int, result.temp_dec);
+    sprintf(buf, "Temp:  %d.%d%cC", (int)result.temp, (int)(result.temp * 10) % 10, 0xDF);
     op.row = 0;
     op.col = 0;
     lcd_op_send(&op);
 
-    sprintf(buf, "Humid: %d.%d%%", result.hum_int, result.hum_dec);
+    sprintf(buf, "Humid: %d.%d%%", (int)result.humid, (int)(result.humid * 10) % 10);
     op.row = 1;
     lcd_op_send(&op);
 
