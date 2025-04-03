@@ -44,7 +44,6 @@ int dht_sense(const PortPin *port, DhtResult *result) {
     _delay_us(2);
     time += 2;
   }
-  /* lcd_flash(); */
 
   time = 0;
   while (!(*port->in & _BV(port->pin))) {
@@ -54,7 +53,6 @@ int dht_sense(const PortPin *port, DhtResult *result) {
     _delay_us(2);
     time += 2;
   }
-  /* lcd_flash(); */
 
   time = 0;
   while (*port->in & _BV(port->pin)) {
@@ -64,7 +62,6 @@ int dht_sense(const PortPin *port, DhtResult *result) {
     _delay_us(2);
     time += 2;
   }
-  /* lcd_flash(); */
 
   uint8_t data[5] = {};
 
@@ -101,10 +98,10 @@ int dht_sense(const PortPin *port, DhtResult *result) {
 
   result->humid = (float)(((uint16_t)data[0] << 8) | data[1]) / 10;
   result->temp = (float)(((int16_t)data[2] << 8) | data[3]) / 10;
-  
-  /* lcd_flash(); */
 
-  return data[0] + data[1] + data[2] + data[3] == data[4] ? 0 : -1;
+  return (((uint16_t)data[0] + data[1] + data[2] + data[3]) & 0xFF) == data[4]
+    ? 0
+    : -1;
 }
 
 void lcd_flash(void) {
