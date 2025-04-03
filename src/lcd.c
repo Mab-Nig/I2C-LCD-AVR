@@ -86,13 +86,9 @@ int lcd_op_send(const LcdOp *op) {
 
   {
     uint8_t ddram_addr = (op->row << 6) | op->col;
-    uint8_t codes[] = {DISPLAY_CTRL(0, 0, 0), SET_DDRAM_ADDR(ddram_addr)};
-
-    for (uint8_t i = 0; i < sizeof(codes); ++i) {
-      cmd.code = codes[i];
-      if (lcd_send_cmd(&cmd) < 0) {
-        return -1;
-      }
+    cmd.code = SET_DDRAM_ADDR(ddram_addr);
+    if (lcd_send_cmd(&cmd) < 0) {
+      return -1;
     }
   }
 

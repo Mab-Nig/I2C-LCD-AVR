@@ -35,12 +35,17 @@ int main(void) {
     op.buf = buf;
     op.clear = 0;
 
-    sprintf(buf, "Temp:  %d.%d%cC", (int)result.temp, (int)(result.temp * 10) % 10, 0xDF);
+    sprintf(
+      buf, "Temp:  %d.%d%cC", (int)result.temp, (int)(result.temp * 10) % 10,
+      0xDF
+    );
     op.row = 0;
     op.col = 0;
     lcd_op_send(&op);
 
-    sprintf(buf, "Humid: %d.%d%%", (int)result.humid, (int)(result.humid * 10) % 10);
+    sprintf(
+      buf, "Humid: %d.%d%%", (int)result.humid, (int)(result.humid * 10) % 10
+    );
     op.row = 1;
     lcd_op_send(&op);
 

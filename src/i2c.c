@@ -19,14 +19,14 @@ inline void i2c_exit(void) { TWCR &= ~_BV(TWEN); }
 
 int i2c_op_send(const I2cOp *op) {
   if (i2c_op_start() < 0) {
-    return -1;    
+    return -1;
   }
   if (i2c_op_send_addr_rw(op) < 0) {
-    return -1;    
+    return -1;
   }
 
   const uint8_t *buf = op->buf;
-  uint8_t buflen = op->buflen;  
+  uint8_t buflen = op->buflen;
   while (buflen) {
     TWDR = *buf;
     TWCR = _BV(TWINT) | _BV(TWEN);
@@ -49,7 +49,7 @@ int i2c_op_start(void) {
   TWCR = _BV(TWINT) | _BV(TWSTA) | _BV(TWEN);
   while (!(TWCR & _BV(TWINT)))
     ;
-  return TW_STATUS == TW_START || TW_STATUS == TW_REP_START ? 0 : -1;  
+  return TW_STATUS == TW_START || TW_STATUS == TW_REP_START ? 0 : -1;
 }
 
 int i2c_op_send_addr_rw(const I2cOp *op) {
