@@ -13,6 +13,11 @@
 #define I2C_ADDR     0x27
 #define MAX_BUF_SIZE 256
 
+#define DHT_PORT_IN  PINB
+#define DHT_PORT_OUT PORTB
+#define DHT_PORT_DIR DDRB
+#define DHT_PIN      PB0
+
 LcdOp op;
 PortPin port;
 DhtResult result;
@@ -60,9 +65,9 @@ inline void init(void) {
   op.backlight = 1;
   lcd_op_init(&op);
 
-  port.dir = &DDRB;
-  port.in = &PINB;
-  port.out = &PORTB;
-  port.pin = PB0;
+  port.dir = &DHT_PORT_DIR;
+  port.in = &DHT_PORT_IN;
+  port.out = &DHT_PORT_OUT;
+  port.pin = DHT_PIN;
   dht_init(&port);
 }
