@@ -7,7 +7,7 @@ This contains generic I2C and LCD1602 drivers for ease of working on AVR chipset
 ### DHT22 Humidity and Temporature Sensor Driver
 
 The sensor requires 1 open-drain pin. We must set up its port's **in**, **out**, and **direction** register.
-```{c}
+```c
 typedef struct PortPin {
   volatile uint8_t *dir, *in, *out;
   uint8_t pin;
@@ -15,7 +15,7 @@ typedef struct PortPin {
 ```
 
 Sensored results are stored in a struct.
-```{c}
+```c
 typedef struct DhtResult {
   float temp, humid;
 } DhtResult;
@@ -24,7 +24,7 @@ typedef struct DhtResult {
 ## I2C Master Driver
 
 The slave address, the operation mode (read or write), and the buffer to send/receive need to be specified.
-```{c}
+```c
 typedef struct I2cOp {
   uint8_t addr_rw;
   const uint8_t *buf;
@@ -36,7 +36,7 @@ typedef struct I2cOp {
 
 We can control a LCD through its instruction set. The initialization sequence and instructions are handled by the library, so the user can just care about the **backlight**, the **cursor's position**, and the **display string**.
 
-```{c}
+```c
 typedef struct I2cOp {
   uint8_t addr_rw;
   const uint8_t *buf;
@@ -48,7 +48,7 @@ typedef struct I2cOp {
 
 ### Configure CMake
 
-```{text}
+```text
 cmake -S. -Bbuild
 ```
 
@@ -59,12 +59,12 @@ Targets can be built:
 - HEX
 - EEPROM
 
-```{text}
+```text
 cmake --build build --target <target>
 ```
 
 ### Burn to Flash
 
-```{text}
+```text
 cmake --build build --target flash
 ```
